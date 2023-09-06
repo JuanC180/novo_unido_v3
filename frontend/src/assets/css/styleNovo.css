@@ -1,0 +1,319 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    /* background-color: #d5f0f51a; */
+    /* background-color: rgb(231, 246, 250); */
+    font-family:Arial, Helvetica, sans-serif;
+    
+
+}
+
+
+.contenedor{
+    /* background-color: rgb(231, 246, 250); */
+    /* background-color: #fff; */
+    background: linear-gradient(-135deg, rgb(2, 31, 89), #ffffff);
+    height: 100vh;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    width: 100%;
+    height: 52px;
+    background-color: #023059;
+}
+
+nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+nav ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+} 
+
+ul li{
+    list-style: none;
+}
+
+ul li a{
+    text-decoration: none;
+    color: #fff;
+}
+
+.logoHeader{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+
+
+.contenedor-formulario{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    height: 80vh;
+    width: auto;
+    /* height: 100vh;
+    height: calc(100vh - 350px); */
+}
+
+.logoLogin{
+    /* width: 50px; */
+    /* height: 50px; */
+    width: 130px;
+    height: 80px;
+    margin-top: 50px;
+}
+
+.tituloLogin{
+    /* font-size: large; */
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 45px;
+}
+
+.formularioLogin{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* background-color: #ebebeb; */
+    /* background-color: rgb(221, 221, 215, 0.4); */
+    background-color: #fff;
+    padding-top: 45px;
+    padding-bottom: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
+    border-radius: 10px;
+
+    border-color: #000;    
+    /* border-style:solid; */
+    /* border-width: 1px; */
+    width: 270px;
+    box-sizing:initial;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+    /* font-weight: bold; */
+    /* border: 1px solid red; */
+}
+
+@media (min-width:400px){
+    .formularioLogin{
+        width: 310px;
+        /* background-color: red; */
+    }
+}
+
+.formularioLogin a{
+    margin-top: 20px;
+    margin-bottom: 4px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.icon-input-login{
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-90%);
+
+}
+
+.input-wrapper{
+    position: relative;
+}
+
+.formulario-Input-Text[type="text"], .formulario-Input-password[type="password"]{
+    margin-bottom: 10px;
+    border: none;
+    /* border-radius: 5px; */
+    border-style: solid;
+    border-width: 1px;
+    height: 40px;
+    padding-top: 3px;
+    padding-bottom: 4px;
+    padding-left: 30px;
+    padding-right: 10px;
+    font-size: 15px;
+    width: 100%;
+
+
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: none; 
+
+    border-bottom-color: black;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    
+
+}
+
+
+
+.formulario-Input-Text[type="text"]:focus-visible, .formulario-Input-password[type="password"]:focus-visible{
+    outline: none;
+}
+
+
+/* ================================================================================================ */
+
+.formularioLogin{
+    /* width: 400px; */
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 1);
+    /* box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8); */
+}
+.formularioLogin .input-wrapper{
+    height: 50px;
+    width: 100%;
+    position: relative;
+}
+.formularioLogin .input-wrapper input{
+    height: 100%;
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    border-bottom: 2px solid silver;
+
+}
+.input-wrapper input:focus ~ label,
+.input-wrapper input:valid ~ label{
+    transform: translateY(-20px);
+    font-size: 15px;
+    color: #4158d0;
+}
+.formularioLogin .input-wrapper label{
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    color: gray;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.formularioLogin .input-wrapper .underline{
+    position: absolute;
+    bottom: 0px;
+    height: 2px;
+    width: 100%;
+}
+.input-wrapper .underline::before{
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 100%;
+    /* background: #4158d0; */
+    background-color: rgb(17, 0, 255);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+.input-wrapper input:focus ~ .underline::before,
+.input-wrapper input:valid ~ .underline::before{
+    transform: scaleX(1);
+}
+
+
+
+/* ================================================================================================ */
+
+
+
+
+
+input[type="submit"]{
+    margin-top: 30px;
+    /* background-color: #3b4d86; */
+    background-color: rgb(2, 31, 89);
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+input[type="submit"]:hover{
+    background-color:rgb(33, 37, 41); ;
+}
+
+input[type="reset"]{
+    margin-top: 2px;
+    /* background-color: #3b4d86; */
+    background-color: rgb(2, 31, 89);
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+input[type="reset"]:hover{
+    background-color:rgb(33, 37, 41); ;
+}
+
+/* .olvide-pass-text{
+    margin-top: 10px;
+    background-color: red;
+} */
+
+.error{
+    /*border: 5px solid blue !important;*/
+
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-color: red !important;
+}
+
+.mensaje{
+    background-color: red;
+    width: 360px;
+    height: 40px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+}
+
+
+.contendorBotones{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+
+/* =======================ESTILOS CONFIRMAR CUENTA=========================== */
+.tituloConfirmarCuenta{
+    font-size: 30px;
+}
+/* =======================ESTILOS CONFIRMAR CUENTA=========================== */
+
+
