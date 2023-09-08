@@ -110,7 +110,7 @@ const ClienteIndividual = ({ cliente }) => {
   const customStyles = {
     content: {
       width: '700px',
-      height: '590px',
+      height: '500px',
       margin: 'auto',
       borderRadius: '10px',
       padding: '20px',

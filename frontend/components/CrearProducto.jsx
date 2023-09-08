@@ -176,20 +176,22 @@ const CrearProducto = () => {
                                         placeholder="Referencia"
                                         required
                                         value={referencia}
-                                        maxLength={80}
+                                        maxLength={6}
                                         onChange={(e) => {
                                             const inputText = e.target.value;
                                             const sanitizedText = inputText.replace(/[^a-zA-Z0-9ñÑ\s]/g, '');
                                             setReferencia(sanitizedText);
 
-                                            if (sanitizedText.length < 3) {
-                                                setReferenciaError(true);
-                                            } else {
+                                            // Usar una expresión regular para validar la referencia
+                                            const referenciaRegex = /^[a-zA-Z]{2}\d{4}$/;
+                                            if (referenciaRegex.test(sanitizedText)) {
                                                 setReferenciaError(false);
+                                            } else {
+                                                setReferenciaError(true);
                                             }
                                         }}
                                     />
-                                    {referenciaError && <div className="invalid-feedback">La referencia debe tener al menos 3 caracteres.</div>}
+                                    {referenciaError && <div className="invalid-feedback">La referencia debe tener dos letras seguidas de cuatro números.</div>}
                                 </div>
 
                                 <div className="mb-3 w-100">

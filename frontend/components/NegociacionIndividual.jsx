@@ -247,7 +247,7 @@ const NegociacionIndividual = ({ negociacion }) => {
   const customStyles = {
     content: {
       width: '700px',
-      height: '590px',
+      height: '500px',
       margin: 'auto',
       borderRadius: '10px',
       padding: '20px',
@@ -258,8 +258,8 @@ const NegociacionIndividual = ({ negociacion }) => {
 
   const customStyles2 = {
     content: {
-      width: '900px',
-      height: '590px',
+      width: '700px',
+      height: '500px',
       margin: 'auto',
       borderRadius: '10px',
       padding: '20px',
@@ -594,21 +594,28 @@ const NegociacionIndividual = ({ negociacion }) => {
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
-                      {/* <Link onClick={toggleDetalles} > */}
-                      <Link onClick={(e)=> 
-                        { 
-                          const tagI = document.querySelectorAll('.fa-bell')
+                      <Link
+                        onClick={(e) => {
+                          const tagI = document.querySelectorAll('.fa-bell');
                           tagI.forEach((identi, i) => {
                             identi.setAttribute('id', `${i}`);
-                          })
-                          console.log(e.target.id)
-                          notificarPorEmail(e.target.id)
-                        }
-                      } 
+                          });
+                          console.log(e.target.id);
+                          notificarPorEmail(e.target.id);
+                        }}
+                        // Agregar el atributo 'disabled' cuando estadoCuota no sea "Vencida"
+                        disabled={item.estadoCuota !== 'Vencida'}
                       >
-                        <i className="fa fa-bell" 
-                        
-                        title="Notificar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
+                        <i
+                          className="fa fa-bell"
+                          title="Notificar"
+                          style={{
+                            marginRight: 10,
+                            color: item.estadoCuota === 'Vencida' ? '#212529' : 'gray', // Cambiar el color cuando deshabilitado
+                            fontSize: 22,
+                            cursor: item.estadoCuota === 'Vencida' ? 'pointer' : 'not-allowed', // Cambiar el cursor cuando deshabilitado
+                          }}
+                        />
                       </Link>
                     </td>
                   </tr>

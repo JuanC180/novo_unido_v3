@@ -55,11 +55,6 @@ const schemaNegociacion = new Schema({
         required: [true, 'Este campo es obligatorio'],
         trim: true,
     },
-    interes: {
-        type: Number,
-        required: [true, 'Este campo es obligatorio'],
-        trim: true
-    },
     fechaGracia: {
         type: Date,
         required: [true, 'Este campo es obligatorio'],
@@ -141,7 +136,7 @@ schemaNegociacion.pre("save", function (next) {
     if (this.cumplimientoCuotas.includes(false)) {
         this.estadoNegociacion = "En mora";
     } else {
-        this.estadoNegociacion = "En paz";
+        this.estadoNegociacion = "A paz y salvo";
     }
 
     const currentDate = new Date();
