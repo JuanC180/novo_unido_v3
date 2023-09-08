@@ -31,6 +31,8 @@ import FormEditarUsuario from "../paginas/FormEditarUsuario";
 
 import { NegociacionProvider } from "../context/NegociacionProvider";
 
+import Error404 from "../components/Error404";
+
 function App() {
   return (
     <BrowserRouter>
@@ -43,6 +45,9 @@ function App() {
               <Route path='olvide-password' element={<OlvidePassword />} />
               <Route path='olvide-password/:token' element={<NuevoPassword />} />
               <Route path='confirmar/:id' element={<ConfirmarCuenta />} />
+
+              <Route path='*' element={<Error404 />} />
+
             </Route>
 
             <Route path='/admin' element={<AdminLayout />}>
@@ -52,7 +57,7 @@ function App() {
               <Route path='cambiar-password' element={<CambiarPasswordCarga />} />
               <Route path='usuarios' element={<UsuariosBotones />} />
               <Route path='listar-usuarios' element={<ListarUsuarios />} />
-              <Route path="editar-usuario/:id" element={<FormEditarUsuario/>} />
+              <Route path="editar-usuario/:id" element={<FormEditarUsuario />} />
 
               {/* Clientes */}
               <Route path="listaclientes" element={<ListarClientes />}></Route>
@@ -73,6 +78,8 @@ function App() {
               <Route path="listanegociaciones" element={<ListarNegociaciones />}></Route>
               <Route path="crearnegociacion" element={<FormCrearNegociacion />}></Route>
               <Route path="editarnegociacion/:id" element={<EditarNegociacion />}></Route>
+
+              <Route path='*' element={<Error404 />} />
 
             </Route>
 

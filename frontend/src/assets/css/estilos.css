@@ -771,3 +771,21 @@ tr.row-no-pagada {
     background-color: #eee0e0;
     /* Cambiar el color de fondo a gris para filas no pagadas */
 }
+
+
+
+.ReactModal__Content::-webkit-scrollbar{
+    width: 5px;
+}
+
+.ReactModal__Content::-webkit-scrollbar-thumb{
+    background-color: rgb(230, 230, 230);
+    border-radius: 20px;
+    border: 3px solid #032770;
+}
+
+.ReactModal__Content{
+    overflow: scroll;
+    scrollbar-color: #032770 rgb(230, 230, 230);
+    
+}
