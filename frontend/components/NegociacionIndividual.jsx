@@ -8,8 +8,6 @@ import Modal from 'react-modal';
 
 import useNegociacion from '../hooks/useNegociacion'
 
-
-
 const NegociacionIndividual = ({ negociacion }) => {
   const { _id } = negociacion;
   const { id } = useParams();
@@ -23,9 +21,6 @@ const NegociacionIndividual = ({ negociacion }) => {
   const [showPlanPagoModal, setShowPlanPagoModal] = useState(false);
   const [cuotasPagadas, setCuotasPagadas] = useState({});
 
-  // console.log(negociaciones)
-
-  //Función para traer los datos del cliente y poder enviar la notificación
   useEffect(() => {
     const url = `cliente/obtenerCliente`;
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
@@ -496,16 +491,12 @@ const NegociacionIndividual = ({ negociacion }) => {
                 <td style={{ color: '#032770' }}>{negociacion.numCuotas}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tasa</th>
+                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tasa de Interés</th>
                 <td style={{ color: '#032770' }}>{negociacion.tasa}</td>
               </tr>
               <tr>
                 <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Anticipo</th>
                 <td style={{ color: '#032770' }}>{negociacion.anticipo}</td>
-              </tr>
-              <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Intereses</th>
-                <td style={{ color: '#032770' }}>{negociacion.interes}</td>
               </tr>
               <tr>
                 <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha Fin Gracia</th>

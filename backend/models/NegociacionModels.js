@@ -100,11 +100,11 @@ schemaNegociacion.pre("save", async function (next) {
     if (this.numCuotas && this.fechaGracia && this.total) {
         const valorCuota = this.total / this.numCuotas; // Calcula el valor de cada cuota
 
-        const fechaFinGracia = new Date(this.fechaGracia);
-        fechaFinGracia.setDate(fechaFinGracia.getDate() - 5); // 5 días antes de la fecha de gracia
+        let fechaPago = new Date(this.fechaGracia.getTime());
+        const cincoDias = 5 * 24 * 60 * 60 * 1000;
 
         const fechasYValoresCuotas = [
-            { fecha: fechaFinGracia, valor: valorCuota }
+            { fecha: new Date(fechaPago.getTime() - cincoDias), valor: valorCuota }
         ];
 
         for (let i = 1; i < this.numCuotas; i++) {

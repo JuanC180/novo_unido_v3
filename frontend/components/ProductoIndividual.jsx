@@ -10,22 +10,10 @@ const ProductoIndividual = ({ producto }) => {
   const [isActivated, setIsActivated] = useState(false);
   const [estado, setEstado] = useState(producto.estado);
   const [mostrarDetalles, setMostrarDetalles] = useState(false); // Estado para controlar la ventana emergente
-  const [datanegociaciones, setDataNegociaciones] = useState([]);
 
   const toggleDetalles = () => {
     setMostrarDetalles(!mostrarDetalles);
   };
-
-  useEffect(() => {
-    fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
-      .then(res => res.json())
-      .then(data => {
-        setDataNegociaciones(data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
 
   const customStyles = {
     content: {
@@ -48,34 +36,11 @@ const ProductoIndividual = ({ producto }) => {
     return <div>No se ha proporcionado un producto válido</div>;
   }
 
-  const tieneNegociacionesActivas = () => {
-    return datanegociaciones.some((negociacion) => {
-      return negociacion.estado === 'Activo' && negociacion.tipoMaquina.includes(producto.nombre);
-    });
-  };
-
   useEffect(() => {
     setIsActivated(estado === 'Activo');
   }, [estado]);
 
   const toggleActivation = () => {
-    if (isActivated && tieneNegociacionesActivas()) {
-      swal({
-        title: "No se puede desactivar",
-        text: "El producto tiene negociaciones activas",
-        icon: "warning",
-        buttons: {
-          accept: {
-            text: "Aceptar",
-            value: true,
-            visible: true,
-            className: "btn-danger",
-            closeModal: true
-          }
-        }
-      });
-      return;
-    }
 
     setIsActivated(!isActivated);
 

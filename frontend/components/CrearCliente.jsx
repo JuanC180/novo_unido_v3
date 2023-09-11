@@ -348,7 +348,7 @@ const CrearCliente = () => {
                     className={`form-control ${cedulaError ? 'is-invalid' : ''}`}
                     placeholder="Documento"
                     required
-                    maxLength={11}
+                    maxLength={10}
                     onKeyDown={(e) => validarNumericos(e, setCedulaError, 6)}
                     onChange={(e) => {
                       setCedula(e.target.value);

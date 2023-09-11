@@ -15,11 +15,21 @@ const ClienteIndividual = ({ cliente }) => {
   //Función para eliminar el cliente
   const navegar = useNavigate();
 
-  const eliminarCliente = () => {
-    if (tieneNegociacionesActivas()) {
+  const eliminarCliente = (event) => {
+    event.preventDefault(); // Prevenir la recarga de la página
+
+    // Verificar si existen negociaciones asociadas al cliente
+    const tieneNegociaciones = datanegociaciones.some(negociacion => {
+      if (negociacion.clienteData) {
+        return negociacion.clienteData.toString() === _id.toString();
+      }
+      return false;
+    });
+
+    if (tieneNegociaciones) {
       swal({
         title: "No se puede eliminar",
-        text: "El cliente tiene negociaciones activas",
+        text: "El cliente tiene facturas asociadas",
         icon: "warning",
         buttons: {
           accept: {
@@ -34,6 +44,7 @@ const ClienteIndividual = ({ cliente }) => {
       return;
     }
 
+    // Si no hay facturas asociadas, procede con la eliminación del cliente
     swal({
       title: "Eliminar",
       text: "¿Estás seguro de eliminar el registro?",
@@ -95,14 +106,6 @@ const ClienteIndividual = ({ cliente }) => {
       });
   }, []);
 
-
-  // const tieneNegociacionesActivas = () => {
-  //   return datanegociaciones.some(negociacion => negociacion.cliente === cliente.nombre && negociacion.estado === 'Activo');
-  // };
-  const tieneNegociacionesActivas = () => {
-    return datanegociaciones.some(negociacion => negociacion.clienteId === cliente._id && negociacion.estado === 'Activo');
-  };
-
   const toggleDetalles = () => {
     setMostrarDetalles(!mostrarDetalles);
   };
@@ -133,7 +136,7 @@ const ClienteIndividual = ({ cliente }) => {
   }, [estado]);
 
   const toggleActivation = () => {
-    if (isActivated && tieneNegociacionesActivas()) {
+    if (isActivated) {
       swal({
         title: "No se puede desactivar",
         text: "El cliente tiene negociaciones activas",
