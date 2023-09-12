@@ -32,7 +32,7 @@ const Admin = () => {
           </div>
 
           {/*<img className="logoPrincipal mx-auto d-block " src={logo} alt="logo" height={400} /> */}
-
+          <img className="logoPrincipal mx-auto d-block " src={logo} alt="logo" height={400} />
 
 
 
