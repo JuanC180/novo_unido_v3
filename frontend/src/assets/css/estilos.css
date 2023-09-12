@@ -789,3 +789,14 @@ tr.row-no-pagada {
     scrollbar-color: #032770 rgb(230, 230, 230);
     
 }
+
+
+.contener-graficas{
+
+}
+
+
+.bloque-grafica{
+    width: 300px;
+    height: 300px;
+}

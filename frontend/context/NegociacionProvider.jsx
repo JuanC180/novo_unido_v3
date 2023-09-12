@@ -5,7 +5,9 @@ const NegociacionContext = createContext();
 const NegociacionProvider = ({ children }) => {
 
     const [negociaciones, setNegociaciones] = useState({})
+    const [negociacionMasVendida, setNegociacionMasVendida] = useState({})
 
+    /*
     useEffect(() => {
         const obtenerNegociacion = async () => {
             const url = `negociacion/obtenerNegociaciones`;
@@ -25,13 +27,61 @@ const NegociacionProvider = ({ children }) => {
                 })
         }
         obtenerNegociacion()
-    },[])
+    }, [])
 
-    return(
+    */
+
+    useEffect(() => {
+        const obtenerNegociacion = async () => {
+            const url = `negociacion/obtenerNegociaciones`;
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos de la negociación');
+                }
+                const data = await response.json();
+                setNegociaciones(data)
+                return data;
+            } catch (error) {
+                console.log(error);
+                return null;
+            }
+        }
+
+        const obtenerMaquinasMasVendidas = async () => {
+            let maaquinas = await obtenerNegociacion()
+
+            let datos2 = []
+            let maquinasAgrupadas = {}
+
+            maaquinas.forEach(maquina => {
+                const nombresMaquinas = maquina.tipoMaquina;
+                const cantidadesMaquinas = maquina.cantidad;
+
+                nombresMaquinas.forEach((nombre, index) => {
+                    if (!maquinasAgrupadas[nombre]) {
+                        maquinasAgrupadas[nombre] = {
+                            nombre,
+                            cantidad: cantidadesMaquinas[index]
+                        };
+                    } else {
+                        maquinasAgrupadas[nombre].cantidad += cantidadesMaquinas[index];
+                    }
+                })
+            });
+            datos2 = Object.values(maquinasAgrupadas);
+            setNegociacionMasVendida(datos2)
+        }
+        obtenerNegociacion();
+        obtenerMaquinasMasVendidas();
+    }, [])
+
+    return (
         <NegociacionContext.Provider
             value={{
                 negociaciones,
-                setNegociaciones
+                setNegociaciones,
+                negociacionMasVendida
             }}
         >
             {children}
