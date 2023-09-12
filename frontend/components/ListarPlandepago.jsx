@@ -71,14 +71,14 @@ const ListarPlandepago = () => {
     }
 
 
-    console.log(suma1, "total")
-    console.log(arrayCantidades, "todas ahi")
+    //console.log(suma1, "total")
+    //console.log(arrayCantidades, "todas ahi")
 
     for (let i = 0; i < arrayCantidades.length; i++) {
         arrayPorcentajes.push((arrayCantidades[i] / suma1) * 100)
     }
 
-    console.log(arrayPorcentajes)
+    //console.log(arrayPorcentajes)
 
 
     const data = {
