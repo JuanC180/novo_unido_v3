@@ -61,14 +61,14 @@ const MenuLateral = ({ componentePrincipal }) => {
 
                         <Link className="d-flex justify-content-start py-2 border-bottom  border-primary" to="/admin/listar-usuarios">
                             <div className="d-flex  align-items-center ">
-                                <i className="icon-menu fa-solid fa-user-tie mx-4" title="Clientes"></i>
+                                <i className="icon-menu fa-solid fa-user-gear mx-4" title="Clientes"></i>
                                 <p className="text-icon-menu my-0">Usuarios</p>
                             </div>
                         </Link>
 
                         <Link className="d-flex justify-content-start py-2 border-bottom border-primary" to="/admin/listaclientes">
                             <div className="d-flex  align-items-center ">
-                                <i className="icon-menu fa-solid fa-user mx-4" title="Clientes"></i>
+                                <i className="icon-menu fa-solid fa-users mx-4" title="Clientes"></i>
                                 <p ref={demoRef} id='miId' className="text-icon-menu my-0">Clientes</p>
                                 {/* <UsuariosBotonesComponente  demoRefDos={demoRef}/> */}
                                 {/* <UsuariosBotonesComponente demoRefDos={demoRef}></UsuariosBotonesComponente> */}
