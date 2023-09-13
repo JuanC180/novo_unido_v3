@@ -376,6 +376,7 @@ const EditarCliente = () => {
                     placeholder="Documento"
                     required
                     maxLength={11}
+                    value={cedula}
                     onKeyDown={(e) => validarNumericos(e, setCedulaError, 6)}
                     onChange={(e) => {
                       setCedula(e.target.value);
@@ -428,7 +429,7 @@ const EditarCliente = () => {
                     placeholder="Grupo"
                     required
                     maxLength={30}
-                    onInput={(e) => validarTexto(e, setGrupoError, 3)} 
+                    onInput={(e) => validarTexto(e, setGrupoError, 3)}
                     value={grupo}
                     onChange={(e) => {
                       setGrupo(e.target.value);

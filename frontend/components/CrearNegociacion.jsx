@@ -100,6 +100,20 @@ const CrearNegociacion = () => {
         setProductosSeleccionados(productosActualizados);
     }
 
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+
+    // Calcular la fecha máxima permitida (último día del séptimo mes)
+    const fechaMaxima = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 7, 0);
+
+    // Calcular la fecha mínima permitida (primer día del mes actual)
+    const primerDiaDelMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
+
+    // Convertir las fechas a formato ISO
+    const fechaActualISO = fechaActual.toISOString().split('T')[0];
+    const fechaMinimaISO = primerDiaDelMes.toISOString().split('T')[0];
+    const fechaMaximaISO = fechaMaxima.toISOString().split('T')[0];
+
     const agregarNegociacion = async () => {
 
         // Verificar que todos los campos sean llenados
@@ -504,7 +518,12 @@ const CrearNegociacion = () => {
 
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Fecha Fin Gracia</label>
-                                        <input type="date" className="form-control" placeholder="Fecha Facturación" required value={fechaGracia} onChange={(e) => { setFechaGracia(e.target.value) }} />
+                                        <input type="date" className="form-control" placeholder="Fecha Facturación" required
+                                            value={fechaGracia}
+                                            onChange={(e) => setFechaGracia(e.target.value)}
+                                            min={fechaMinimaISO} // Establecer la fecha mínima permitida (mes actual)
+                                            max={fechaMaximaISO} // Establecer la fecha máxima permitida (6 meses a partir de la fecha actual)
+                                        />
                                     </div>
 
                                     <div className="mb-3 w-100">

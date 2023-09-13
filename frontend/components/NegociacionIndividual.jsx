@@ -598,7 +598,7 @@ const NegociacionIndividual = ({ negociacion }) => {
                         disabled={item.estadoCuota !== 'Vencida'}
                       >
                         <i
-                          className="fa fa-bell"
+                          className="fa fa-envelope"
                           title="Notificar"
                           style={{
                             marginRight: 10,
