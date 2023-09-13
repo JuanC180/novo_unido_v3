@@ -14,6 +14,7 @@ import { Line } from 'react-chartjs-2';
 
 import { Bar } from 'react-chartjs-2';
 import { Doughnut } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
 
 
@@ -194,6 +195,9 @@ const ListarPlandepago = () => {
 
 
 
+
+
+
     useEffect(() => {
         const ctx = document.querySelector('.myChart');
         console.log(ctx)
@@ -238,21 +242,33 @@ const ListarPlandepago = () => {
 
                 <main className="d-flex flex-column  border border-primary m-3 rounded">
                     <div className="contenedor-tabla mx-3">
-                        <h3 className="py-0 pt-3 my-0">REPORTES</h3>
+                        <h3 className="py-0 pt-3 my-0">SEGUIMIENTO NOVOTIC</h3>
 
-                        <div className='border border-success m-3 rounded d-flex contener-graficas'>
-                            <div className='border border-warning m-3 rounded bloque-grafica'>
+                        <div className='border border- m-3 rounded d-flex contener-graficas'>
+                            {/* <div className='myChart border border-warning m-3 rounded  d-flex flex-column  bloque-grafica'>
+                                <h5 className="py-0 pt-3 my-3 mx-3 text-center">DIAGRAMA 1</h5>
                                 <LinesChart />
-                            </div>
+                            </div> */}
+
+
+                            {/* <div className='border border-dark m-3 rounded '>
+                                <div className='myChart d-flex flex-column justify-content-center'>
+                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto maś vendido </h5>
+                                    <LinesChart />
+                                </div>
+                            </div> */}
 
                             <div className='border border-dark m-3 rounded '>
                                 <div className='myChart d-flex flex-column justify-content-center'>
+                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto maś vendido </h5>
                                     <Bar options={options} data={data_barra} />
                                 </div>
                             </div>
 
-                            <div className='border border-danger m-3 rounded'>
-                                <div className='myChart d-flex flex-column justify-content-center'>
+
+                            <div className='border border-dark m-3 rounded justify-content-center'>
+                                <div className='myChart d-flex flex-column '>
+                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto más vendido</h5>
                                     <Doughnut options={options} data={data_pie} />
                                 </div>
                             </div>
@@ -260,7 +276,7 @@ const ListarPlandepago = () => {
 
                         </div>
 
-                        <h3 className="py-0 pt-3 my-0">SEGUIMIENTO PLANES DE PAGO</h3>
+                        <h3 className="py-0 pt-3 my-0">Seguimiento planes de pago</h3>
                         <div className="contenerdor-boton-buscar my-4">
                             <div className="row">
                                 <div className="col-sm-12 col-md-6 blo1 my-1">

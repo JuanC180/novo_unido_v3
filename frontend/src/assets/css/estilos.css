@@ -797,6 +797,6 @@ tr.row-no-pagada {
 
 
 .bloque-grafica{
-    width: 300px;
-    height: 300px;
+    width: auto;
+    height: 400px;
 }
