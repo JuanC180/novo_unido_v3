@@ -418,7 +418,7 @@ const ListarPlandepago = () => {
                             </div>
 
                             <div className='border border-dark m-3 rounded bloque-grafica '>
-                                <div className='myChart d-flex flex-column justify-content-center'>
+                                <div className='myChart d-flex flex-column justify-content-center '>
                                     <h5 className="py-0 pt-3 my-3 mx-3 text-center">Valor total - Negociaciones </h5>
                                     <Bar options={options} data={data_total} />
                                 </div>
@@ -426,7 +426,7 @@ const ListarPlandepago = () => {
 
                             <div className='border border-dark m-3 rounded bloque-grafica '>
                                 <div className='myChart d-flex flex-column justify-content-center'>
-                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Productos vendidos por mes </h5>
+                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Ventas por mes </h5>
                                     {/* <LinesChart /> */}
                                     <Line options={mioptions} data={data_mese} />
                                 </div>
