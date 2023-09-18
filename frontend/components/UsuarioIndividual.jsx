@@ -121,14 +121,15 @@ const UsuarioIndividual = ({ usuario }) => {
             <td>{usuario.email}</td>
             <td style={{ textAlign: 'center' }}>
                 <Link onClick={toggleActivation}>
-                    <FaToggleOn
-                        title="Activar-Desactivar"
+                    <i
+                        className="fa fa-toggle-on"
+                        title="Este icono permite cambiar el estado del usuario a activo o inactivo"
                         style={{
                             marginRight: 10,
-                            color: isActivated ? 'green' : 'gray', // Cambia el color según el estado
+                            color: isActivated ? 'green' : 'gray',
                             fontSize: 30,
-                            transition: 'transform 0.2s ease', // Agrega una transición suave al giro
-                            transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)', // Aplica el giro horizontal según el estado
+                            transition: 'transform 0.2s ease',
+                            transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)',
                         }}
                     />
                 </Link>
@@ -139,7 +140,7 @@ const UsuarioIndividual = ({ usuario }) => {
                 <Link to={`/admin/editar-usuario/${usuario._id}`}>
                     <i
                         className="fa fa-pencil"
-                        title="Editar"
+                        title="Este icono da acceso al formulario de edición del usuario"
                         style={{
                             marginRight: 10,
                             color: usuario.estado === 'Activo' ? '#212529' : 'gray',

@@ -108,7 +108,7 @@ const EditarPerfil = () => {
                     <div className="contenedores d-flex justify-content-center flex-lg-row flex-column  flex-sm-column mx-5 gap-5">
                         <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100 ">
                             <div className="mb-3 w-100">
-                                <label htmlFor="nombre" className="form-label fw-bold">Nombre</label>
+                                <label htmlFor="nombre" className="form-label fw-bold">Nombre<span className="text-danger"> *</span></label>
                                 <input
                                     type="text"
                                     className={`form-control ${nombreError ? 'is-invalid' : ''}`}
@@ -129,7 +129,7 @@ const EditarPerfil = () => {
                             </div>
 
                             <div className="mb-3 w-100">
-                                <label htmlFor="email" className="form-label fw-bold">Correo</label>
+                                <label htmlFor="email" className="form-label fw-bold">Correo<span className="text-danger"> *</span></label>
                                 <input
                                     type="email"
                                     className={`form-control ${emailError ? 'is-invalid' : ''}`}
@@ -154,7 +154,7 @@ const EditarPerfil = () => {
 
                         <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0  w-100 ">
                             <div className="mb-3 w-100">
-                                <label htmlFor="apellido" className="form-label fw-bold">Apellido</label>
+                                <label htmlFor="apellido" className="form-label fw-bold">Apellido<span className="text-danger"> *</span></label>
                                 <input
                                     type="text"
                                     className={`form-control ${apellidoError ? 'is-invalid' : ''}`}

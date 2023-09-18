@@ -406,29 +406,36 @@ const NegociacionIndividual = ({ negociacion }) => {
         <td>{negociacion.estadoNegociacion}</td>
         <td style={{ textAlign: 'center' }}>
           <Link onClick={setShowModal}>
-            <i className="fa fa-shopping-cart" style={{ fontSize: '1.5rem', color: '#212529' }} />
+            <i className="fa fa-shopping-cart"
+              title="Este icono permite visualizar los productos comprados dentro de la negociación"
+              style={{ fontSize: '1.5rem', color: '#212529' }} />
           </Link>
         </td>
         <td style={{ textAlign: 'center' }}>
           <Link onClick={toggleDetalles} >
-            <i className="fa fa-circle-info" title="Detalle" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
+            <i className="fa fa-circle-info"
+              title="Este icono da acceso a la ventana modal que contiene toda la información de la negociación"
+              style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
           </Link>
 
           <Link onClick={toggleActivation}>
-            <FaToggleOn
-              title="Activar-Desactivar"
+            <i
+              className="fa fa-toggle-on"
+              title="Este icono permite cambiar el estado de la negociación a activa o inactiva"
               style={{
                 marginRight: 10,
-                color: isActivated ? 'green' : 'gray', // Cambia el color según el estado
+                color: isActivated ? 'green' : 'gray',
                 fontSize: 30,
-                transition: 'transform 0.2s ease', // Agrega una transición suave al giro
-                transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)', // Aplica el giro horizontal según el estado
+                transition: 'transform 0.2s ease',
+                transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)',
               }}
             />
           </Link>
 
           <Link onClick={togglePlanPagoModal}>
-            <i className="fa fa-money" title="Plan de pago" style={{ color: '#212529', fontSize: 22 }} />
+            <i className="fa fa-money"
+              title="Este icono le permite visualizar el plan de pago dentro de la negociación"
+              style={{ color: '#212529', fontSize: 22 }} />
           </Link>
         </td>
 
@@ -441,22 +448,22 @@ const NegociacionIndividual = ({ negociacion }) => {
           <h2 style={{ textAlign: 'center', color: '#032770' }}>DETALLE PRODUCTOS</h2>
           <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
-              <thead className="table-secondary" style={{ border: "2px solid blue" }}>
+            <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
+              <thead className="table-secondary">
                 <tr>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Producto</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cantidad</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Base</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Venta</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Producto</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cantidad</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Base</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Venta</th>
                 </tr>
               </thead>
               <tbody>
                 {negociacion.tipoMaquina.map((producto, index) => (
                   <tr key={index}>
-                    <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: producto }}></td>
-                    <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: negociacion.cantidad[index] }}></td>
-                    <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? `$ ${parseFloat(negociacion.precioBase[index]).toLocaleString('es-CO')}` : '' }}></td>
-                    <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? `$ ${parseFloat(negociacion.precioVenta[index]).toLocaleString('es-CO')}` : '' }}></td>
+                    <td dangerouslySetInnerHTML={{ __html: producto }}></td>
+                    <td dangerouslySetInnerHTML={{ __html: negociacion.cantidad[index] }}></td>
+                    <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? `$ ${parseFloat(negociacion.precioBase[index]).toLocaleString('es-CO')}` : '' }}></td>
+                    <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? `$ ${parseFloat(negociacion.precioVenta[index]).toLocaleString('es-CO')}` : '' }}></td>
                   </tr>
                 ))}
               </tbody>
@@ -472,64 +479,64 @@ const NegociacionIndividual = ({ negociacion }) => {
           <br />
           <h2 style={{ textAlign: 'center', color: '#032770' }}>DETALLE NEGOCIACIÓN</h2>
           <br />
-          <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
-            <tbody style={{ border: "2px solid blue" }}>
+          <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
+            <tbody style={{ border: "2px" }}>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha Facturación</th>
-                <td style={{ color: '#032770' }}>{fechaCreacionFormateada}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Fecha Facturación</th>
+                <td>{fechaCreacionFormateada}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cliente</th>
-                <td style={{ color: '#032770' }}>{negociacion.cliente}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cliente</th>
+                <td>{negociacion.cliente}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Factura</th>
-                <td style={{ color: '#032770' }}>{negociacion.numFactura}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Factura</th>
+                <td>{negociacion.numFactura}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cuotas</th>
-                <td style={{ color: '#032770' }}>{negociacion.numCuotas}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cuotas</th>
+                <td>{negociacion.numCuotas}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tasa de Interés</th>
-                <td style={{ color: '#032770' }}>{negociacion.tasa}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Tasa de Interés</th>
+                <td>{negociacion.tasa}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Anticipo</th>
-                <td style={{ color: '#032770' }}>{negociacion.anticipo}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Anticipo</th>
+                <td>{negociacion.anticipo}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha Fin Gracia</th>
-                <td style={{ color: '#032770' }}>{fechaFormateada}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Fecha Fin Gracia</th>
+                <td>{fechaFormateada}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Subtotal</th>
-                <td style={{ color: '#032770' }}>$ {parseFloat(sumaSubtotales).toLocaleString('es-CO')}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Subtotal</th>
+                <td>$ {parseFloat(sumaSubtotales).toLocaleString('es-CO')}</td>
               </tr>
               <tr>
-                <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Total</th>
-                <td style={{ color: '#032770' }}>$ {negociacion.total.toLocaleString('es-CO', { minimumFractionDigits: 0 })}</td>
+                <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Total</th>
+                <td>$ {negociacion.total.toLocaleString('es-CO', { minimumFractionDigits: 0 })}</td>
               </tr>
             </tbody>
           </table>
-          <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
-            <thead className="table-secondary" style={{ border: "2px solid blue" }}>
+          <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
+            <thead className="table-secondary">
               <tr>
-                <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Producto</th>
-                <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cantidad</th>
-                <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Base</th>
-                <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Venta</th>
+                <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Producto</th>
+                <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cantidad</th>
+                <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Base</th>
+                <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Venta</th>
               </tr>
             </thead>
             <tbody>
               {negociacion.tipoMaquina.map((producto, index) => (
                 <tr key={index}>
-                  <td style={{ color: '#032770' }}>{producto}</td>
-                  <td style={{ color: '#032770' }}>{negociacion.cantidad[index]}</td>
-                  <td style={{ color: '#032770' }}>
+                  <td>{producto}</td>
+                  <td>{negociacion.cantidad[index]}</td>
+                  <td>
                     $ {parseFloat(negociacion.precioBase[index]).toLocaleString('es-CO')}
                   </td>
-                  <td style={{ color: '#032770' }}>
+                  <td>
                     $ {parseFloat(negociacion.precioVenta[index]).toLocaleString('es-CO')}
                   </td>
                 </tr>
@@ -547,15 +554,15 @@ const NegociacionIndividual = ({ negociacion }) => {
           <h2 style={{ textAlign: 'center', color: "#032770" }}>PLAN DE PAGO</h2>
           <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
-              <thead className="table-secondary" style={{ border: "2px solid blue" }}>
+            <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
+              <thead className="table-secondary">
                 <tr>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cuota</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Valor</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Estado</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cumplimiento</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Notificar</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cuota</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Fecha</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Valor</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Estado</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cumplimiento</th>
+                  <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Notificar</th>
                 </tr>
               </thead>
               <tbody>
@@ -564,24 +571,45 @@ const NegociacionIndividual = ({ negociacion }) => {
                     key={index}
                     className={cuotasPagadas[item.numCuota] ? 'row-pagada' : 'row-no-pagada'}
                   >
-                    <td style={{ color: '#032770' }}>{item.numCuota}</td>
-                    <td style={{ color: '#032770' }}>{item.fecha}</td>
-                    <td style={{ color: '#032770' }}>$ {item.valor}</td>
-                    <td style={{ color: '#032770' }}>{item.estadoCuota}</td>
-                    <td key={item.numCuota} style={{ textAlign: 'center' }}>
-                      <span>
-                        {/* Marcar como pagada */}
-                        <FaCheck
-                          className={`green-icon ${cuotasPagadas[item.numCuota] ? 'active' : ''}`} title="Pagada"
-                          style={{ fontSize: 20, cursor: 'pointer', color: '#699F29' }}
-                          onClick={() => handleCuotaPagada(item.numCuota)}
-                        />
-                        {/* Marcar como no pagada */}
-                        <FaTimes
-                          className={`red-icon ${!cuotasPagadas[item.numCuota] ? 'active' : ''}`} title="No pagada"
-                          style={{ fontSize: 22, marginLeft: 30, cursor: 'pointer', color: '#ED3131' }}
-                          onClick={() => handleCuotaNoPagada(item.numCuota)}
-                        />
+                    <td>{item.numCuota}</td>
+                    <td>{item.fecha}</td>
+                    <td>$ {item.valor}</td>
+                    <td>{item.estadoCuota}</td>
+                    <td key={item.numCuota} style={{ textAlign: 'center', position: 'relative' }}>
+                      <select
+                        value={cuotasPagadas[item.numCuota] ? 'pagada' : 'noPagada'}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (value === 'pagada') {
+                            handleCuotaPagada(item.numCuota);
+                          } else {
+                            handleCuotaNoPagada(item.numCuota);
+                          }
+                        }}
+                        style={{
+                          fontSize: '15px',
+                          padding: '4px',
+                          borderRadius: '3px',
+                          backgroundColor: cuotasPagadas[item.numCuota] ? '#699F29' : '#ED3131',
+                          color: 'white',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <option value="pagada">Paga</option>
+                        <option value="noPagada">En deuda</option>
+                      </select>
+                      <span
+                        style={{
+                          position: 'absolute',
+                          top: '-40px', // Ajusta la posición vertical
+                          left: '50%', // Centra horizontalmente
+                          transform: 'translateX(-50%)', // Centra horizontalmente
+                          color: 'white',
+                          padding: '2px 6px',
+                          borderRadius: '10px',
+                          fontSize: '5px',
+                        }}
+                      >
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
@@ -599,7 +627,7 @@ const NegociacionIndividual = ({ negociacion }) => {
                       >
                         <i
                           className="fa fa-envelope"
-                          title="Notificar"
+                          title="Este icono permite notificar al cliente nuevamente su pago"
                           style={{
                             marginRight: 10,
                             color: item.estadoCuota === 'Vencida' ? '#212529' : 'gray', // Cambiar el color cuando deshabilitado

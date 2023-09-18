@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral'
@@ -15,8 +15,8 @@ const CrearProducto = () => {
     const [nombreError, setNombreError] = useState(false)
     const [precioBaseError, setPrecioBaseError] = useState(false)
     const [descripcionError, setDescripcionError] = useState(false)
-    const { auth } = useAuth()
-
+    const [precioBaseFormatted, setPrecioBaseFormatted] = useState('');
+    const { auth } = useAuth() 
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -28,36 +28,48 @@ const CrearProducto = () => {
         navigate(-1); // Regresa a la ubicación anterior
     };
 
-    function validarNumericos(event, setErrorState, longitudMinima) {
+    const formatNumber = (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      };
+      
+      function validarNumericos(event, setErrorState, longitudMinima) {
         const charCode = event.keyCode || event.which;
         const char = String.fromCharCode(charCode);
-
-        // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
-        if (charCode === 8 || charCode === 46 || charCode === 9) {
-            return;
+      
+        // Permitir la tecla de retroceso (backspace), la tecla de suprimir (delete) y el punto decimal
+        if (charCode === 8 || charCode === 46 || charCode === 9 || char === '.') {
+          return;
         }
-
+      
         // Verificar si el carácter no es un número del 0 al 9
         if (/\D/.test(char)) {
-            event.preventDefault();
-            return;
+          event.preventDefault();
+          return;
         }
-
+      
         const inputText = event.target.value;
-
+      
         // Remover caracteres no numéricos, excepto el punto decimal
         const sanitizedText = inputText.replace(/[^\d.]/g, '');
-
+      
         // Actualizar el valor del input con el texto sanitizado
         event.target.value = sanitizedText;
-
+      
         // Validar longitud mínima
         if (sanitizedText.length < longitudMinima) {
-            setErrorState(true);
+          setErrorState(true);
         } else {
-            setErrorState(false);
+          setErrorState(false);
         }
-    }
+      }
+
+      useEffect(() => {
+        if (precioBase) {
+          setPrecioBaseFormatted(formatNumber(parseFloat(precioBase).toFixed(0)));
+        } else {
+          setPrecioBaseFormatted('');
+        }
+      }, [precioBase]);
 
     const agregarProducto = async (e) => {
         e.preventDefault()
@@ -169,7 +181,7 @@ const CrearProducto = () => {
                         <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Referencia</label>
+                                    <label className="form-label fw-bold">Referencia<span className="text-danger"> *</span></label>
                                     <input
                                         type="text"
                                         className={`form-control ${referenciaError ? 'is-invalid' : ''}`}
@@ -195,20 +207,25 @@ const CrearProducto = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Precio base</label>
-                                    <input type="text" className={`form-control ${precioBaseError || (precioBase && parseFloat(precioBase) < 33000000) ? 'is-invalid' : ''}`}
-                                        placeholder="Precio base" required maxLength={9}
-                                        onKeyDown={(e) => validarNumericos(e, setPrecioBaseError)}
-                                        value={precioBase}
+                                    <label className="form-label fw-bold">Precio base<span className="text-danger"> *</span></label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${precioBaseError || (precioBase && parseFloat(precioBase) < 33000000) ? 'is-invalid' : ''}`}
+                                        placeholder="Precio base"
+                                        required
+                                        maxLength={12}
+                                        value={precioBaseFormatted}
+                                        onKeyDown={(e) => validarNumericos(e, setPrecioBaseError, 1)}
                                         onChange={(e) => {
-                                            setPrecioBase(e.target.value);
+                                            const unformattedValue = e.target.value.replace(/\./g, ''); // Elimina los puntos de los separadores de miles
+                                            setPrecioBase(unformattedValue);
                                         }}
                                     />
                                     {precioBase && parseFloat(precioBase) < 33000000 && <div className="invalid-feedback">El precio base debe ser mínimo $33000000</div>}
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Descripción</label>
+                                    <label className="form-label fw-bold">Descripción<span className="text-danger"> *</span></label>
                                     <textarea
                                         className={`form-control ${descripcionError ? 'is-invalid' : ''}`}
                                         placeholder="Descripción"
@@ -232,7 +249,7 @@ const CrearProducto = () => {
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Nombre</label>
+                                    <label className="form-label fw-bold">Nombre<span className="text-danger"> *</span></label>
                                     <input
                                         type="text"
                                         className={`form-control ${nombreError ? 'is-invalid' : ''}`}
@@ -257,7 +274,7 @@ const CrearProducto = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Imagen</label>
+                                    <label className="form-label fw-bold">Imagen<span className="text-danger"> *</span></label>
                                     <input type="file" className="form-control" placeholder="Imagen" name='imagen' required onChange={handleFileChange} />
                                 </div>
                             </div>

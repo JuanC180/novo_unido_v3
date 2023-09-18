@@ -11,7 +11,6 @@ import LinesChart from './graficos/LinesChart';
 import BarsChart from './graficos/BarsChart';
 import PiesChart from './graficos/PiesChart';
 import Doughnuts from './graficos/DounghnutsChart';
-import { Line } from 'react-chartjs-2';
 
 
 import { Bar } from 'react-chartjs-2';
@@ -19,6 +18,28 @@ import { Doughnut } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
 
 
+import { Line } from 'react-chartjs-2';
+
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 const ListarPlandepago = () => {
     const [busqueda, setBusqueda] = useState("");
@@ -30,16 +51,18 @@ const ListarPlandepago = () => {
 
 
 
-    const { negociacionMasVendida } = useNegociacion()
+    const { negociacionMasVendida, valorTotalNegociacion, negociaciones } = useNegociacion()
 
-    console.log(negociacionMasVendida)
+
+
+    //console.log(negociaciones)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/negociacion/obtenerNegociaciones`);
                 const data = await response.json();
-                console.log(data)
+                //console.log(data)
                 setDataNegociaciones(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -102,10 +125,50 @@ const ListarPlandepago = () => {
     const araryNombres = []
     const arrayCantidades = []
     const arrayPorcentajes = []
+    const arrayFechasMongo = []
+    const arrayNombreMes = []
+    const arrayContadorMes = []
+
+    let cantidadEnMes = 0
 
     let suma1 = 0
     let porcentajes1 = 0
-    // console.log( negociacionMasVendida)
+
+    const date = new Date()
+    const fechaActual = date.toISOString()
+    const fActual = new Date(fechaActual)
+
+    const contadorMeses = {}; // Objeto para llevar un registro de las cantidades de cada mes
+
+    negociaciones.forEach((negociacion) => {
+        const fecha = new Date(Date.parse(negociacion.fechaFacturacion));
+
+        if (!isNaN(fecha)) {
+            const options = { month: 'long' };
+            const fechaTexto = fecha.toLocaleDateString('es-ES', options);
+
+            const texto = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1)
+
+            if (contadorMeses[texto]) {
+                contadorMeses[texto]++;
+            } else {
+                contadorMeses[texto] = 1;
+            }
+        } else {
+            console.log(`Fecha no válida: ${negociacion.fechaFacturacion}`);
+        }
+    });
+
+
+
+    // Imprime el contador de meses
+    for (const mes in contadorMeses) {
+        //console.log(`${mes}: ${contadorMeses[mes]} veces`);
+        arrayNombreMes.push(mes)
+        arrayContadorMes.push(contadorMeses[mes])
+        cantidadEnMes = cantidadEnMes + contadorMeses[mes]
+    }
+
 
     for (let i = 0; i < negociacionMasVendida.length; i++) {
         // console.log(negociacionMasVendida[i])
@@ -116,7 +179,7 @@ const ListarPlandepago = () => {
         suma1 = suma1 + negociacionMasVendida[i].cantidad
         porcentajes1 = (negociacionMasVendida[i].cantidad / suma1) * 100
 
-        console.log(porcentajes1)
+        //console.log(porcentajes1)
     }
 
 
@@ -166,7 +229,7 @@ const ListarPlandepago = () => {
         labels: araryNombres,
         datasets: [
             {
-                label: 'Porcentaje',
+                label: 'Cantidad',
                 data: arrayCantidades,
                 backgroundColor: backgroundColors,
                 borderColor: backgroundColors.map(color => color.replace('0.2', '1')),
@@ -185,6 +248,39 @@ const ListarPlandepago = () => {
                 backgroundColor: backgroundColors,
                 borderColor: backgroundColors.map(color => color.replace('0.2', '1')),
                 borderWidth: 1,
+            }
+        ],
+    };
+
+    const data_total = {
+        //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['Negociociones'],
+        datasets: [
+            {
+                label: 'Total',
+                data: [valorTotalNegociacion],
+                backgroundColor: backgroundColors,
+                borderColor: backgroundColors.map(color => color.replace('0.2', '1')),
+                borderWidth: 1,
+            }
+        ],
+    };
+
+
+    const data_mese = {
+        //labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        labels: arrayNombreMes,
+        datasets: [
+            {
+                label: "Cantidad",
+                data: arrayContadorMes,
+                tension: 0.5,
+                fill: true,
+                borderColor: 'rgb(255,99,132)',
+                backgroundColor: 'rgba(255,99,132,0.5',
+                pointRadius: 5,
+                pointBorderColor: 'rgba(255,99,132)',
+                pointBackgroundColor: 'rgba(255,99,132'
             }
         ],
     };
@@ -241,6 +337,26 @@ const ListarPlandepago = () => {
         },
     };
 
+    let mioptions = {
+        responsive: true,
+        animation: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scale: {
+            y: {
+                min: 0,
+                max: cantidadEnMes
+            },
+            x: {
+                tick: { color: 'rgba(0,220,195)' }
+            }
+        },
+
+    }
+
 
 
 
@@ -248,7 +364,7 @@ const ListarPlandepago = () => {
 
     useEffect(() => {
         const ctx = document.querySelector('.myChart');
-        console.log(ctx)
+        //console.log(ctx)
         ctx.style.width = '300px'
         ctx.style.height = '300px'
         // ctx.style.backgroundColor = 'purple'
@@ -257,10 +373,11 @@ const ListarPlandepago = () => {
 
 
     function searchData(event) {
-        event.preventDefault();
-        setBusqueda(event.target.value);
+        const { value } = event.target;
+      
+        setBusqueda(value);
         setPaginaActual(1); // Resetear la página cuando se inicia una nueva búsqueda
-    }
+      }
 
     const negociacionesFiltradas = filtrarNegociaciones(dataNegociaciones, busqueda);
     const plandepagoPaginados = negociacionesFiltradas
@@ -294,29 +411,34 @@ const ListarPlandepago = () => {
                                 <LinesChart />
                             </div> */}
 
-
-                            {/* <div className='border border-dark m-3 rounded '>
-                                <div className='myChart d-flex flex-column justify-content-center'>
-                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto maś vendido </h5>
-                                    <LinesChart />
-                                </div>
-                            </div> */}
-
-                            <div className='border border-dark m-3 rounded '>
+                            <div className='border border-dark m-3 rounded bloque-grafica'>
                                 <div className='myChart d-flex flex-column justify-content-center'>
                                     <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto maś vendido </h5>
                                     <Bar options={options} data={data_barra} />
                                 </div>
                             </div>
 
+                            <div className='border border-dark m-3 rounded bloque-grafica '>
+                                <div className='myChart d-flex flex-column justify-content-center '>
+                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Valor total - Negociaciones </h5>
+                                    <Bar options={options} data={data_total} />
+                                </div>
+                            </div>
 
-                            <div className='border border-dark m-3 rounded justify-content-center'>
+                            <div className='border border-dark m-3 rounded bloque-grafica '>
+                                <div className='myChart d-flex flex-column justify-content-center'>
+                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Ventas por mes </h5>
+                                    {/* <LinesChart /> */}
+                                    <Line options={mioptions} data={data_mese} />
+                                </div>
+                            </div>
+
+                            {/*  <div className='border border-dark m-3 rounded justify-content-center'>
                                 <div className='myChart d-flex flex-column '>
                                     <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto más vendido</h5>
                                     <Doughnut options={options} data={data_pie} />
                                 </div>
-                            </div>
-
+                            </div> */ }
 
                         </div>
 
@@ -331,8 +453,14 @@ const ListarPlandepago = () => {
 
                                 <div className="col-sm-12 col-md-6 blo2 my-1">
                                     <form action="" className="div-search">
-                                        <input type="text" className="search-style form-control rounded-pill" value={busqueda} onChange={searchData}
-                                            placeholder="Buscar" />
+                                    <input
+  type="text"
+  className="search-style form-control rounded-pill"
+  value={busqueda}
+  onChange={searchData}
+  placeholder="Buscar"
+/>
+
                                     </form>
                                 </div>
                             </div>
@@ -381,7 +509,7 @@ const ListarPlandepago = () => {
                                                 <Link onClick={() => toggleDetalles(negociacion._id)}>
                                                     <i
                                                         className="fa fa-circle-info"
-                                                        title="Detalle"
+                                                        title="Este icono da acceso a la ventana modal que contiene toda la información de la negociación correspondiente a la cuota"
                                                         style={{ marginRight: 10, color: '#212529', fontSize: 22 }}
                                                     />
                                                 </Link>
@@ -393,60 +521,60 @@ const ListarPlandepago = () => {
                                                 <br />
                                                 <h2 style={{ textAlign: 'center', color: '#032770' }}>DETALLE NEGOCIACIÓN</h2>
                                                 <br />
-                                                <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
-                                                    <tbody style={{ border: "2px solid blue" }}>
+                                                <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
+                                                    <tbody style={{ border: "2px" }}>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha Facturación</th>
-                                                            <td style={{ color: '#032770' }}>{isValid(parseISO(negociacion.fechaFacturacion)) ? format(new Date(negociacion.fechaFacturacion), 'dd/MM/yyyy') : 'Fecha inválida'}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Fecha Facturación</th>
+                                                            <td>{isValid(parseISO(negociacion.fechaFacturacion)) ? format(new Date(negociacion.fechaFacturacion), 'dd/MM/yyyy') : 'Fecha inválida'}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cliente</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.cliente}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cliente</th>
+                                                            <td>{negociacion.cliente}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Factura</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.numFactura}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Factura</th>
+                                                            <td>{negociacion.numFactura}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cuotas</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.numCuotas}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cuotas</th>
+                                                            <td>{negociacion.numCuotas}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tasa de Interés</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.tasa}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Tasa de Interés</th>
+                                                            <td>{negociacion.tasa}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Anticipo</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.anticipo}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Anticipo</th>
+                                                            <td>{negociacion.anticipo}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha Fin Gracia</th>
-                                                            <td style={{ color: '#032770' }}>{isValid(parseISO(negociacion.fechaGracia)) ? format(new Date(negociacion.fechaGracia), 'dd/MM/yyyy') : 'Fecha inválida'}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Fecha Fin Gracia</th>
+                                                            <td>{isValid(parseISO(negociacion.fechaGracia)) ? format(new Date(negociacion.fechaGracia), 'dd/MM/yyyy') : 'Fecha inválida'}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Total</th>
-                                                            <td style={{ color: '#032770' }}>$ {negociacion.total.toLocaleString('es-CO', { minimumFractionDigits: 0 })}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Total</th>
+                                                            <td>$ {negociacion.total.toLocaleString('es-CO', { minimumFractionDigits: 0 })}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
-                                                    <thead className="table-secondary" style={{ border: "2px solid blue" }}>
+                                                <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
+                                                    <thead className="table-secondary">
                                                         <tr>
-                                                            <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Producto</th>
-                                                            <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cantidad</th>
-                                                            <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Base</th>
-                                                            <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Venta</th>
+                                                            <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Producto</th>
+                                                            <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cantidad</th>
+                                                            <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Base</th>
+                                                            <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Venta</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {negociacion.tipoMaquina.map((producto, index) => (
                                                             <tr key={index}>
-                                                                <td style={{ color: '#032770' }}>{producto}</td>
-                                                                <td style={{ color: '#032770' }}>{negociacion.cantidad[index]}</td>
-                                                                <td style={{ color: '#032770' }}>
+                                                                <td>{producto}</td>
+                                                                <td>{negociacion.cantidad[index]}</td>
+                                                                <td>
                                                                     $ {parseFloat(negociacion.precioBase[index]).toLocaleString('es-CO')}
                                                                 </td>
-                                                                <td style={{ color: '#032770' }}>
+                                                                <td>
                                                                     $ {parseFloat(negociacion.precioVenta[index]).toLocaleString('es-CO')}
                                                                 </td>
                                                             </tr>
