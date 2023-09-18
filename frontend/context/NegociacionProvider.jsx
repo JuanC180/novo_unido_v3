@@ -6,6 +6,7 @@ const NegociacionProvider = ({ children }) => {
 
     const [negociaciones, setNegociaciones] = useState({})
     const [negociacionMasVendida, setNegociacionMasVendida] = useState({})
+    const [valorTotalNegociacion, setValorTotalNegociacion] = useState({})
 
     /*
     useEffect(() => {
@@ -51,6 +52,8 @@ const NegociacionProvider = ({ children }) => {
         const obtenerMaquinasMasVendidas = async () => {
             let maaquinas = await obtenerNegociacion()
 
+            //console.log(maaquinas)
+
             let datos2 = []
             let maquinasAgrupadas = {}
 
@@ -72,8 +75,22 @@ const NegociacionProvider = ({ children }) => {
             datos2 = Object.values(maquinasAgrupadas);
             setNegociacionMasVendida(datos2)
         }
+
+        const obtenerValorTotalNegociacion = async () => {
+            let maquinas = await obtenerNegociacion()
+            let suma = 0
+
+            maquinas.forEach(maquina => {
+                suma = suma + maquina.total
+            })
+
+            setValorTotalNegociacion(suma)
+        }
+
+
         obtenerNegociacion();
         obtenerMaquinasMasVendidas();
+        obtenerValorTotalNegociacion()
     }, [])
 
     return (
@@ -81,7 +98,8 @@ const NegociacionProvider = ({ children }) => {
             value={{
                 negociaciones,
                 setNegociaciones,
-                negociacionMasVendida
+                negociacionMasVendida,
+                valorTotalNegociacion
             }}
         >
             {children}

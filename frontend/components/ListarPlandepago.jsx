@@ -11,7 +11,6 @@ import LinesChart from './graficos/LinesChart';
 import BarsChart from './graficos/BarsChart';
 import PiesChart from './graficos/PiesChart';
 import Doughnuts from './graficos/DounghnutsChart';
-import { Line } from 'react-chartjs-2';
 
 
 import { Bar } from 'react-chartjs-2';
@@ -19,6 +18,28 @@ import { Doughnut } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
 
 
+import { Line } from 'react-chartjs-2';
+
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 const ListarPlandepago = () => {
     const [busqueda, setBusqueda] = useState("");
@@ -30,16 +51,18 @@ const ListarPlandepago = () => {
 
 
 
-    const { negociacionMasVendida } = useNegociacion()
+    const { negociacionMasVendida, valorTotalNegociacion, negociaciones } = useNegociacion()
 
-    console.log(negociacionMasVendida)
+
+
+    //console.log(negociaciones)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/negociacion/obtenerNegociaciones`);
                 const data = await response.json();
-                console.log(data)
+                //console.log(data)
                 setDataNegociaciones(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -102,10 +125,50 @@ const ListarPlandepago = () => {
     const araryNombres = []
     const arrayCantidades = []
     const arrayPorcentajes = []
+    const arrayFechasMongo = []
+    const arrayNombreMes = []
+    const arrayContadorMes = []
+
+    let cantidadEnMes = 0
 
     let suma1 = 0
     let porcentajes1 = 0
-    // console.log( negociacionMasVendida)
+
+    const date = new Date()
+    const fechaActual = date.toISOString()
+    const fActual = new Date(fechaActual)
+
+    const contadorMeses = {}; // Objeto para llevar un registro de las cantidades de cada mes
+
+    negociaciones.forEach((negociacion) => {
+        const fecha = new Date(Date.parse(negociacion.fechaFacturacion));
+
+        if (!isNaN(fecha)) {
+            const options = { month: 'long' };
+            const fechaTexto = fecha.toLocaleDateString('es-ES', options);
+
+            const texto = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1)
+
+            if (contadorMeses[texto]) {
+                contadorMeses[texto]++;
+            } else {
+                contadorMeses[texto] = 1;
+            }
+        } else {
+            console.log(`Fecha no válida: ${negociacion.fechaFacturacion}`);
+        }
+    });
+
+
+
+    // Imprime el contador de meses
+    for (const mes in contadorMeses) {
+        //console.log(`${mes}: ${contadorMeses[mes]} veces`);
+        arrayNombreMes.push(mes)
+        arrayContadorMes.push(contadorMeses[mes])
+        cantidadEnMes = cantidadEnMes + contadorMeses[mes]
+    }
+
 
     for (let i = 0; i < negociacionMasVendida.length; i++) {
         // console.log(negociacionMasVendida[i])
@@ -116,7 +179,7 @@ const ListarPlandepago = () => {
         suma1 = suma1 + negociacionMasVendida[i].cantidad
         porcentajes1 = (negociacionMasVendida[i].cantidad / suma1) * 100
 
-        console.log(porcentajes1)
+        //console.log(porcentajes1)
     }
 
 
@@ -166,7 +229,7 @@ const ListarPlandepago = () => {
         labels: araryNombres,
         datasets: [
             {
-                label: 'Porcentaje',
+                label: 'Cantidad',
                 data: arrayCantidades,
                 backgroundColor: backgroundColors,
                 borderColor: backgroundColors.map(color => color.replace('0.2', '1')),
@@ -185,6 +248,39 @@ const ListarPlandepago = () => {
                 backgroundColor: backgroundColors,
                 borderColor: backgroundColors.map(color => color.replace('0.2', '1')),
                 borderWidth: 1,
+            }
+        ],
+    };
+
+    const data_total = {
+        //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['Negociociones'],
+        datasets: [
+            {
+                label: 'Total',
+                data: [valorTotalNegociacion],
+                backgroundColor: backgroundColors,
+                borderColor: backgroundColors.map(color => color.replace('0.2', '1')),
+                borderWidth: 1,
+            }
+        ],
+    };
+
+
+    const data_mese = {
+        //labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        labels: arrayNombreMes,
+        datasets: [
+            {
+                label: "Cantidad",
+                data: arrayContadorMes,
+                tension: 0.5,
+                fill: true,
+                borderColor: 'rgb(255,99,132)',
+                backgroundColor: 'rgba(255,99,132,0.5',
+                pointRadius: 5,
+                pointBorderColor: 'rgba(255,99,132)',
+                pointBackgroundColor: 'rgba(255,99,132'
             }
         ],
     };
@@ -241,6 +337,26 @@ const ListarPlandepago = () => {
         },
     };
 
+    let mioptions = {
+        responsive: true,
+        animation: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scale: {
+            y: {
+                min: 0,
+                max: cantidadEnMes
+            },
+            x: {
+                tick: { color: 'rgba(0,220,195)' }
+            }
+        },
+
+    }
+
 
 
 
@@ -248,7 +364,7 @@ const ListarPlandepago = () => {
 
     useEffect(() => {
         const ctx = document.querySelector('.myChart');
-        console.log(ctx)
+        //console.log(ctx)
         ctx.style.width = '300px'
         ctx.style.height = '300px'
         // ctx.style.backgroundColor = 'purple'
@@ -294,28 +410,34 @@ const ListarPlandepago = () => {
                                 <LinesChart />
                             </div> */}
 
-
-                            {/* <div className='border border-dark m-3 rounded '>
-                                <div className='myChart d-flex flex-column justify-content-center'>
-                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto maś vendido </h5>
-                                    <LinesChart />
-                                </div>
-                            </div> */}
-
-                            <div className='border border-dark m-3 rounded '>
+                            <div className='border border-dark m-3 rounded bloque-grafica'>
                                 <div className='myChart d-flex flex-column justify-content-center'>
                                     <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto maś vendido </h5>
                                     <Bar options={options} data={data_barra} />
                                 </div>
                             </div>
 
+                            <div className='border border-dark m-3 rounded bloque-grafica '>
+                                <div className='myChart d-flex flex-column justify-content-center'>
+                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Valor total - Negociaciones </h5>
+                                    <Bar options={options} data={data_total} />
+                                </div>
+                            </div>
 
-                            <div className='border border-dark m-3 rounded justify-content-center'>
+                            <div className='border border-dark m-3 rounded bloque-grafica '>
+                                <div className='myChart d-flex flex-column justify-content-center'>
+                                    <h5 className="py-0 pt-3 my-3 mx-3 text-center">Productos vendidos por mes </h5>
+                                    {/* <LinesChart /> */}
+                                    <Line options={mioptions} data={data_mese} />
+                                </div>
+                            </div>
+
+                            {/*  <div className='border border-dark m-3 rounded justify-content-center'>
                                 <div className='myChart d-flex flex-column '>
                                     <h5 className="py-0 pt-3 my-3 mx-3 text-center">Producto más vendido</h5>
                                     <Doughnut options={options} data={data_pie} />
                                 </div>
-                            </div>
+                            </div> */ }
 
 
                         </div>

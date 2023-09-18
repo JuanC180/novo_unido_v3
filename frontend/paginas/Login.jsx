@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Alerta from '../components/Alerta'
 import useAuth from '../hooks/useAuth'
@@ -18,6 +18,11 @@ const Login = () => {
     const { setAuth } = useAuth()
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const body = document.querySelector('#body')
+        body.style.marginLeft = '0px'
+    }, [])
 
     const handleSubmit = async e => {
         e.preventDefault()

@@ -797,6 +797,11 @@ tr.row-no-pagada {
 
 
 .bloque-grafica{
-    width: auto;
-    height: 400px;
+    width: 290px;
+    height: 300px;
+}
+
+.bloque-grafica canvas{
+    
+    width: 280px !important;
 }
