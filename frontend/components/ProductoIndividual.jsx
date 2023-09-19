@@ -101,7 +101,9 @@ const ProductoIndividual = ({ producto }) => {
       <td>$ {parseFloat(producto.precioBase).toLocaleString('es-CO')}</td>
       <td style={{ textAlign: 'center' }}>
         <Link onClick={toggleDetalles} >
-          <i className="fa fa-circle-info" title="Detalle" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
+          <i className="fa fa-circle-info"
+            title="Este icono da acceso al formulario de edición del producto"
+            style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
         {/* <Link to={`/admin/editarproducto/${producto._id}`}>
           <i className="fa fa-pencil" title="Editar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
@@ -109,7 +111,7 @@ const ProductoIndividual = ({ producto }) => {
         <Link to={`/admin/editarproducto/${producto._id}`}>
           <i
             className="fa fa-pencil"
-            title="Editar"
+            title="Este icono da acceso al formulario de edición del producto"
             style={{
               marginRight: 10,
               color: producto.estado === 'Activo' ? '#212529' : 'gray',
@@ -138,18 +140,19 @@ const ProductoIndividual = ({ producto }) => {
           />
         </Link>
         <Link onClick={toggleActivation}>
-          <FaToggleOn
-            title="Activar-Desactivar"
+          <i
+            className="fa fa-toggle-on"
+            title="Este icono permite cambiar el estado del producto a activo o inactivo"
             style={{
               marginRight: 10,
-              // color: isActivated ? '#021F59' : 'gray', // Cambia el color según el estado
-              color: isActivated ? 'green' : 'gray', // Cambia el color según el estado
+              color: isActivated ? 'green' : 'gray',
               fontSize: 30,
-              transition: 'transform 0.2s ease', // Agrega una transición suave al giro
-              transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)', // Aplica el giro horizontal según el estado
+              transition: 'transform 0.2s ease',
+              transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)',
             }}
           />
         </Link>
+
       </td>
       <Modal isOpen={mostrarDetalles} onRequestClose={toggleDetalles} style={customStyles} >
         <Link onClick={closeModal}>
@@ -158,27 +161,40 @@ const ProductoIndividual = ({ producto }) => {
         <br />
         <h2 style={{ textAlign: 'center', color: '#032770' }}>DETALLE PRODUCTO</h2>
         <br />
-        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
+        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
           <tbody>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Referencia</th>
-              <td style={{ color: '#032770' }}>{producto.referencia}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Referencia</th>
+              <td>{producto.referencia}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Nombre</th>
-              <td style={{ color: '#032770' }}>{producto.nombre}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Nombre</th>
+              <td>{producto.nombre}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Base</th>
-              <td style={{ color: '#032770' }}>{producto.precioBase}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Base</th>
+              <td>{producto.precioBase}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Descripción</th>
-              <td style={{ color: '#032770' }}>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Descripción</th>
+              <td>
                 <div style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{producto.descripcion}</div>
               </td>
             </tr>
-            <p><img className='text-centerounded mx-auto d-block' width={200} height={200} src={`${import.meta.env.VITE_BACKEND_URL}/api/producto/obtener-imagen-producto/${producto._id}`} ></img></p>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Imagen</th>
+              <td>
+                <div style={{ textAlign: 'center' }}>
+                  <img
+                    style={{ display: 'block', margin: '0 auto' }}
+                    width={200}
+                    height={200}
+                    src={`${import.meta.env.VITE_BACKEND_URL}/api/producto/obtener-imagen-producto/${producto._id}`}
+                    alt="Descripción de la imagen"
+                  />
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </Modal>

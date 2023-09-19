@@ -135,11 +135,21 @@ const ClienteIndividual = ({ cliente }) => {
     setIsActivated(estado === 'Activo');
   }, [estado]);
 
-  const toggleActivation = () => {
-    if (isActivated) {
+  const toggleActivation = (event) => {
+    event.preventDefault(); // Prevenir la recarga de la página
+
+    // Verificar si existen negociaciones asociadas al cliente
+    const tieneNegociaciones = datanegociaciones.some(negociacion => {
+      if (negociacion.clienteData) {
+        return negociacion.clienteData.toString() === _id.toString();
+      }
+      return false;
+    });
+
+    if (tieneNegociaciones) {
       swal({
         title: "No se puede desactivar",
-        text: "El cliente tiene negociaciones activas",
+        text: "El cliente tiene facturas asociadas",
         icon: "warning",
         buttons: {
           accept: {
@@ -216,7 +226,9 @@ const ClienteIndividual = ({ cliente }) => {
       <td>{cliente.grupo}</td>
       <td style={{ textAlign: 'center' }}>
         <Link onClick={toggleDetalles} >
-          <i className="fa fa-circle-info" title="Detalle" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
+          <i className="fa fa-circle-info"
+            title="Este icono da acceso a la ventana modal que contiene toda la información del cliente"
+            style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
 
         {/* <Link to={`/admin/editarcliente/${cliente._id}`}>
@@ -225,7 +237,7 @@ const ClienteIndividual = ({ cliente }) => {
         <Link to={`/admin/editarcliente/${cliente._id}`}>
           <i
             className="fa fa-pencil"
-            title="Editar"
+            title="Este icono da acceso al formulario de edición del cliente"
             style={{
               marginRight: 10,
               color: cliente.estado === 'Activo' ? '#212529' : 'gray',
@@ -253,20 +265,24 @@ const ClienteIndividual = ({ cliente }) => {
             }}
           />
         </Link>
+
         <Link onClick={toggleActivation}>
-          <FaToggleOn
-            title="Activar-Desactivar"
+          <i
+            className="fa fa-toggle-on"
+            title="Este icono permite cambiar el estado del cliente a activo o inactivo"
             style={{
               marginRight: 10,
-              color: isActivated ? 'green' : 'gray', // Cambia el color según el estado
+              color: isActivated ? 'green' : 'gray',
               fontSize: 30,
-              transition: 'transform 0.2s ease', // Agrega una transición suave al giro
-              transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)', // Aplica el giro horizontal según el estado
+              transition: 'transform 0.2s ease',
+              transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)',
             }}
           />
         </Link>
+
         <Link onClick={eliminarCliente}>
-          <i className="fa fa-trash" title="Eliminar" style={{ color: '#dc3545', fontSize: 22 }} />
+          <i className="fa fa-trash" title="Este icono permite eliminar el registro del cliente"
+            style={{ color: '#dc3545', fontSize: 22 }} />
         </Link>
       </td>
       <Modal isOpen={mostrarDetalles} onRequestClose={toggleDetalles} style={customStyles} >
@@ -276,63 +292,63 @@ const ClienteIndividual = ({ cliente }) => {
         <br />
         <h2 style={{ textAlign: 'center', color: '#032770' }}>DETALLE CLIENTE</h2>
         <br />
-        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
+        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
           <tbody>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tipo documento</th>
-              <td style={{ color: '#032770' }}>{cliente.tipoDocumento}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Tipo documento</th>
+              <td>{cliente.tipoDocumento}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Documento</th>
-              <td style={{ color: '#032770' }}>{cliente.cedula}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Documento</th>
+              <td>{cliente.cedula}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Nombre</th>
-              <td style={{ color: '#032770' }}>{cliente.nombre}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Nombre</th>
+              <td>{cliente.nombre}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Apellido</th>
-              <td style={{ color: '#032770' }}>{cliente.apellido}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Apellido</th>
+              <td>{cliente.apellido}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Dirección</th>
-              <td style={{ color: '#032770' }}>{cliente.direccion}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Dirección</th>
+              <td>{cliente.direccion}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Teléfono</th>
-              <td style={{ color: '#032770' }}>{cliente.telefono}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Teléfono</th>
+              <td>{cliente.telefono}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Correo</th>
-              <td style={{ color: '#032770' }}>{cliente.email}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Correo</th>
+              <td>{cliente.email}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Grupo</th>
-              <td style={{ color: '#032770' }}>{cliente.grupo}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Grupo</th>
+              <td>{cliente.grupo}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tipo Documento Codeudor</th>
-              <td style={{ color: '#032770' }}>{cliente.tipoDocumentoCod}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Tipo Documento Codeudor</th>
+              <td>{cliente.tipoDocumentoCod}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Documento Codeudor</th>
-              <td style={{ color: '#032770' }}>{cliente.cedulaCodeudor}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Documento Codeudor</th>
+              <td>{cliente.cedulaCodeudor}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Nombre Codeudor</th>
-              <td style={{ color: '#032770' }}>{cliente.nombreCodeudor}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Nombre Codeudor</th>
+              <td>{cliente.nombreCodeudor}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Apellido Codeudor</th>
-              <td style={{ color: '#032770' }}>{cliente.apellidoCodeudor}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Apellido Codeudor</th>
+              <td>{cliente.apellidoCodeudor}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Teléfono Codeudor</th>
-              <td style={{ color: '#032770' }}>{cliente.telefonoCodeudor}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Teléfono Codeudor</th>
+              <td>{cliente.telefonoCodeudor}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>País</th>
-              <td style={{ color: '#032770' }}>{cliente.pais}</td>
+              <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>País</th>
+              <td>{cliente.pais}</td>
             </tr>
           </tbody>
         </table>

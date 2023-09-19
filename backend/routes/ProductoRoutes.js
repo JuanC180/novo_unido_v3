@@ -12,7 +12,7 @@ router.get('/obtenerProducto', obtenerProductos);
 router.get('/obtenerdataproducto/:id', obtenerDataProductos);
 
 //Actualizar Producto
-router.put('/actualizarProducto/:id', actualizarProducto);
+router.patch('/actualizarProducto/:id', actualizarProducto);
 
 //Eliminar el producto
 router.delete('/eliminarproducto/:id', eliminarProducto);

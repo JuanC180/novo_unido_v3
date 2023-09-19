@@ -102,7 +102,7 @@ const CambiarPassword = () => {
           <div className="contenedores d-flex justify-content-center flex-lg-row flex-column  flex-sm-column mx-5 gap-5">
             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100 ">
               <div className="mb-3 w-100">
-                <label htmlFor="passwordActual" className="form-label fw-bold">Contraseña actual</label>
+                <label htmlFor="passwordActual" className="form-label fw-bold">Contraseña actual<span className="text-danger"> *</span></label>
                 <input
                   type="password"
                   className="form-control"
@@ -120,7 +120,7 @@ const CambiarPassword = () => {
               </div>
 
               <div className="mb-3 w-100">
-                <label htmlFor="passwordRepetir" className="form-label fw-bold">Repetir contraseña</label>
+                <label htmlFor="passwordRepetir" className="form-label fw-bold">Repetir contraseña<span className="text-danger"> *</span></label>
                 <input
                   type="password"
                   className={`form-control ${repetirPasswordNuevaError ? 'is-invalid' : ''}`}
@@ -138,7 +138,7 @@ const CambiarPassword = () => {
 
             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0  w-100 ">
               <div className="mb-3 w-100">
-                <label htmlFor="passwordNuevo" className="form-label fw-bold">Contraseña nueva</label>
+                <label htmlFor="passwordNuevo" className="form-label fw-bold">Contraseña nueva<span className="text-danger"> *</span></label>
                 <input
                   type="password"
                   className={`form-control ${passwordNuevaError ? 'is-invalid' : ''}`}

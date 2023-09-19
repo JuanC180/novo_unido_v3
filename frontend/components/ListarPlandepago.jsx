@@ -373,8 +373,9 @@ const ListarPlandepago = () => {
 
 
     function searchData(event) {
-        event.preventDefault();
-        setBusqueda(event.target.value);
+        const { value } = event.target;
+
+        setBusqueda(value);
         setPaginaActual(1); // Resetear la página cuando se inicia una nueva búsqueda
     }
 
@@ -439,7 +440,6 @@ const ListarPlandepago = () => {
                                 </div>
                             </div> */ }
 
-
                         </div>
 
                         <h3 className="py-0 pt-3 my-0">Seguimiento planes de pago</h3>
@@ -453,8 +453,14 @@ const ListarPlandepago = () => {
 
                                 <div className="col-sm-12 col-md-6 blo2 my-1">
                                     <form action="" className="div-search">
-                                        <input type="text" className="search-style form-control rounded-pill" value={busqueda} onChange={searchData}
-                                            placeholder="Buscar" />
+                                        <input
+                                            type="text"
+                                            className="search-style form-control rounded-pill"
+                                            value={busqueda}
+                                            onChange={searchData}
+                                            placeholder="Buscar"
+                                        />
+
                                     </form>
                                 </div>
                             </div>
@@ -503,7 +509,7 @@ const ListarPlandepago = () => {
                                                 <Link onClick={() => toggleDetalles(negociacion._id)}>
                                                     <i
                                                         className="fa fa-circle-info"
-                                                        title="Detalle"
+                                                        title="Este icono da acceso a la ventana modal que contiene toda la información de la negociación correspondiente a la cuota"
                                                         style={{ marginRight: 10, color: '#212529', fontSize: 22 }}
                                                     />
                                                 </Link>
@@ -515,60 +521,60 @@ const ListarPlandepago = () => {
                                                 <br />
                                                 <h2 style={{ textAlign: 'center', color: '#032770' }}>DETALLE NEGOCIACIÓN</h2>
                                                 <br />
-                                                <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
-                                                    <tbody style={{ border: "2px solid blue" }}>
+                                                <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
+                                                    <tbody style={{ border: "2px" }}>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha Facturación</th>
-                                                            <td style={{ color: '#032770' }}>{isValid(parseISO(negociacion.fechaFacturacion)) ? format(new Date(negociacion.fechaFacturacion), 'dd/MM/yyyy') : 'Fecha inválida'}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Fecha Facturación</th>
+                                                            <td>{isValid(parseISO(negociacion.fechaFacturacion)) ? format(new Date(negociacion.fechaFacturacion), 'dd/MM/yyyy') : 'Fecha inválida'}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cliente</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.cliente}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cliente</th>
+                                                            <td>{negociacion.cliente}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Factura</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.numFactura}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Factura</th>
+                                                            <td>{negociacion.numFactura}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cuotas</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.numCuotas}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cuotas</th>
+                                                            <td>{negociacion.numCuotas}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tasa de Interés</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.tasa}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Tasa de Interés</th>
+                                                            <td>{negociacion.tasa}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Anticipo</th>
-                                                            <td style={{ color: '#032770' }}>{negociacion.anticipo}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Anticipo</th>
+                                                            <td>{negociacion.anticipo}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha Fin Gracia</th>
-                                                            <td style={{ color: '#032770' }}>{isValid(parseISO(negociacion.fechaGracia)) ? format(new Date(negociacion.fechaGracia), 'dd/MM/yyyy') : 'Fecha inválida'}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Fecha Fin Gracia</th>
+                                                            <td>{isValid(parseISO(negociacion.fechaGracia)) ? format(new Date(negociacion.fechaGracia), 'dd/MM/yyyy') : 'Fecha inválida'}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Total</th>
-                                                            <td style={{ color: '#032770' }}>$ {negociacion.total.toLocaleString('es-CO', { minimumFractionDigits: 0 })}</td>
+                                                            <th scope="row" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Total</th>
+                                                            <td>$ {negociacion.total.toLocaleString('es-CO', { minimumFractionDigits: 0 })}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
-                                                    <thead className="table-secondary" style={{ border: "2px solid blue" }}>
+                                                <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px" }}>
+                                                    <thead className="table-secondary">
                                                         <tr>
-                                                            <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Producto</th>
-                                                            <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cantidad</th>
-                                                            <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Base</th>
-                                                            <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Venta</th>
+                                                            <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Producto</th>
+                                                            <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Cantidad</th>
+                                                            <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Base</th>
+                                                            <th scope="col" style={{ backgroundColor: "#4B4B4B", color: 'white' }}>Precio Venta</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {negociacion.tipoMaquina.map((producto, index) => (
                                                             <tr key={index}>
-                                                                <td style={{ color: '#032770' }}>{producto}</td>
-                                                                <td style={{ color: '#032770' }}>{negociacion.cantidad[index]}</td>
-                                                                <td style={{ color: '#032770' }}>
+                                                                <td>{producto}</td>
+                                                                <td>{negociacion.cantidad[index]}</td>
+                                                                <td>
                                                                     $ {parseFloat(negociacion.precioBase[index]).toLocaleString('es-CO')}
                                                                 </td>
-                                                                <td style={{ color: '#032770' }}>
+                                                                <td>
                                                                     $ {parseFloat(negociacion.precioVenta[index]).toLocaleString('es-CO')}
                                                                 </td>
                                                             </tr>

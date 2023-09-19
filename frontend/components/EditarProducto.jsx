@@ -16,6 +16,7 @@ const EditarProducto = () => {
     const [nombreError, setNombreError] = useState(false)
     const [precioBaseError, setPrecioBaseError] = useState(false)
     const [descripcionError, setDescripcionError] = useState(false)
+    const [precioBaseFormatted, setPrecioBaseFormatted] = useState('');
     const { auth } = useAuth()
 
     const handleFileChange = (e) => {
@@ -27,12 +28,16 @@ const EditarProducto = () => {
         navigate(-1); // Regresa a la ubicación anterior
     };
 
+    const formatNumber = (value) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
     function validarNumericos(event, setErrorState, longitudMinima) {
         const charCode = event.keyCode || event.which;
         const char = String.fromCharCode(charCode);
 
-        // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
-        if (charCode === 8 || charCode === 46 || charCode === 9) {
+        // Permitir la tecla de retroceso (backspace), la tecla de suprimir (delete) y el punto decimal
+        if (charCode === 8 || charCode === 46 || charCode === 9 || char === '.') {
             return;
         }
 
@@ -58,22 +63,13 @@ const EditarProducto = () => {
         }
     }
 
-    function validarTexto(event, setErrorState, longitudMinima) {
-        const inputText = event.target.value;
-
-        // Remover caracteres especiales y números, permitiendo solo letras y la letra "ñ" (tanto en mayúscula como en minúscula)
-        const sanitizedText = inputText.replace(/[^a-zA-ZñÑ\s]/g, '');
-
-        // Actualizar el valor del input con el texto sanitizado
-        event.target.value = sanitizedText;
-
-        // Validar longitud mínima
-        if (sanitizedText.length < longitudMinima) {
-            setErrorState(true);
+    useEffect(() => {
+        if (precioBase) {
+            setPrecioBaseFormatted(formatNumber(parseFloat(precioBase).toFixed(0)));
         } else {
-            setErrorState(false);
+            setPrecioBaseFormatted('');
         }
-    }
+    }, [precioBase]);
 
     useEffect(() => {
         const url = `producto/obtenerdataproducto/${id}`;
@@ -98,23 +94,16 @@ const EditarProducto = () => {
 
     //Función para actualizar
     const actualizarProducto = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-
-        // Verificar que todos los campos sean llenados
-        if (
-            referencia === '' ||
-            nombre === '' ||
-            precioBase === '' ||
-            // imagen === '' ||
-            descripcion === ''
-        ) {
+        // Verificar que al menos una propiedad sea llenada
+        if (!referencia && !nombre && !precioBase && !descripcion) {
             swal({
                 title: "Campos vacíos",
-                text: "Todos los campos son obligatorios",
+                text: "Debes llenar al menos un campo para actualizar",
                 icon: "warning",
                 button: "Aceptar"
-            })
+            });
             return;
         }
 
@@ -141,22 +130,16 @@ const EditarProducto = () => {
             descripcion
         };
 
-        const formData = new FormData()
-        formData.append('referencia', referencia)
-        formData.append('nombre', nombre)
-        formData.append('precioBase', precioBase)
-        formData.append('imagen', imagen)
-        formData.append('descripcion', descripcion)
-        formData.append('productoActualizado', JSON.stringify(productoActualizado))
+        const formData = new FormData();
+        for (const key in productoActualizado) {
+            formData.append(key, productoActualizado[key]);
+        }
 
         try {
             const url = `producto/actualizarProducto/${id}`;
             // const response = await fetch(`http://localhost:4000/api/producto/actualizarProducto/${id}`, {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
-                method: 'PUT',
-                /*headers: {
-                    'Content-Type': 'application/json'
-                },*/
+                method: 'PATCH', // Cambiar a PATCH
                 body: formData
             });
 
@@ -214,7 +197,7 @@ const EditarProducto = () => {
                         <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Referencia</label>
+                                    <label className="form-label fw-bold">Referencia<span className="text-danger"> *</span></label>
                                     <input
                                         type="text"
                                         className={`form-control ${referenciaError ? 'is-invalid' : ''}`}
@@ -240,20 +223,25 @@ const EditarProducto = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Precio base</label>
-                                    <input type="text" className={`form-control ${precioBaseError || (precioBase && parseFloat(precioBase) < 33000000) ? 'is-invalid' : ''}`}
-                                        placeholder="Precio base" required maxLength={9}
-                                        onKeyDown={(e) => validarNumericos(e, setPrecioBaseError)}
-                                        value={precioBase}
+                                    <label className="form-label fw-bold">Precio base<span className="text-danger"> *</span></label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${precioBaseError || (precioBase && parseFloat(precioBase) < 33000000) ? 'is-invalid' : ''}`}
+                                        placeholder="Precio base"
+                                        required
+                                        maxLength={12}
+                                        value={precioBaseFormatted}
+                                        onKeyDown={(e) => validarNumericos(e, setPrecioBaseError, 1)}
                                         onChange={(e) => {
-                                            setPrecioBase(e.target.value);
+                                            const unformattedValue = e.target.value.replace(/\./g, ''); // Elimina los puntos de los separadores de miles
+                                            setPrecioBase(unformattedValue);
                                         }}
                                     />
-                                    {precioBase && parseFloat(precioBase) < 33000000 && <div className="invalid-feedback">El precio base debe ser mínimo $33000000</div>}
+                                    {precioBase && parseFloat(precioBase) < 33000000 && <div className="invalid-feedback">El precio base debe ser mínimo $33.000.000</div>}
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Descripción</label>
+                                    <label className="form-label fw-bold">Descripción<span className="text-danger"> *</span></label>
                                     <textarea
                                         className={`form-control ${descripcionError ? 'is-invalid' : ''}`}
                                         placeholder="Descripción"
@@ -276,7 +264,7 @@ const EditarProducto = () => {
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Nombre</label>
+                                    <label className="form-label fw-bold">Nombre<span className="text-danger"> *</span></label>
                                     <input
                                         type="text"
                                         className={`form-control ${nombreError ? 'is-invalid' : ''}`}
@@ -302,7 +290,7 @@ const EditarProducto = () => {
 
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Imagen</label>
-                                    <input type="file" className="form-control" placeholder="Imagen" name='imagen' required onChange={handleFileChange} />
+                                    <input type="file" className="form-control" placeholder="Imagen" name='imagen' onChange={handleFileChange} />
                                 </div>
                             </div>
                         </div>

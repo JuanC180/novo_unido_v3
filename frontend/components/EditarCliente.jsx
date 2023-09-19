@@ -262,7 +262,7 @@ const EditarCliente = () => {
             <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
               <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Tipo documento</label>
+                  <label className="form-label fw-bold">Tipo documento<span className="text-danger"> *</span></label>
                   <select className="form-select" required value={tipoDocumento}
                     onChange={(e) => { setTipoDocumento(e.target.value) }}>
                     <option value="">Seleccionar</option>
@@ -271,7 +271,7 @@ const EditarCliente = () => {
                   </select>
                 </div>
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Nombre</label>
+                  <label className="form-label fw-bold">Nombre<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${nombreError ? 'is-invalid' : ''}`}
@@ -289,7 +289,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Dirección</label>
+                  <label className="form-label fw-bold">Dirección<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${direccionError ? 'is-invalid' : ''}`}
@@ -307,7 +307,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Email</label>
+                  <label className="form-label fw-bold">Email<span className="text-danger"> *</span></label>
                   <input
                     type="email"
                     className={`form-control ${emailError ? 'is-invalid' : ''}`}
@@ -323,7 +323,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Tipo documento Codeudor</label>
+                  <label className="form-label fw-bold">Tipo documento Codeudor<span className="text-danger"> *</span></label>
                   <select id="cliente" className="form-select" required value={tipoDocumentoCod}
                     onChange={(e) => { setTipoDocumentoCod(e.target.value) }}>
                     <option value="">Seleccionar</option>
@@ -332,7 +332,7 @@ const EditarCliente = () => {
                   </select>
                 </div>
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Nombre Codeudor</label>
+                  <label className="form-label fw-bold">Nombre Codeudor<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${nombreCodeudorError ? 'is-invalid' : ''}`}
@@ -350,7 +350,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Teléfono Codeudor</label>
+                  <label className="form-label fw-bold">Teléfono Codeudor<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${telefonoCodeudorError ? 'is-invalid' : ''}`}
@@ -369,7 +369,7 @@ const EditarCliente = () => {
               </div>
               <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Documento</label>
+                  <label className="form-label fw-bold">Documento<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${cedulaError ? 'is-invalid' : ''}`}
@@ -386,7 +386,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Apellido</label>
+                  <label className="form-label fw-bold">Apellido<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${apellidoError ? 'is-invalid' : ''}`}
@@ -404,7 +404,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Teléfono</label>
+                  <label className="form-label fw-bold">Teléfono<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${telefonoError ? 'is-invalid' : ''}`}
@@ -421,7 +421,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Grupo</label>
+                  <label className="form-label fw-bold">Grupo<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${grupoError ? 'is-invalid' : ''}`}
@@ -439,7 +439,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Documento Codeudor</label>
+                  <label className="form-label fw-bold">Documento Codeudor<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${cedulaCodeudorError ? 'is-invalid' : ''}`}
@@ -456,7 +456,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Apellido Codeudor</label>
+                  <label className="form-label fw-bold">Apellido Codeudor<span className="text-danger"> *</span></label>
                   <input
                     type="text"
                     className={`form-control ${apellidoCodeudorError ? 'is-invalid' : ''}`}
@@ -474,7 +474,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">País</label>
+                  <label className="form-label fw-bold">País<span className="text-danger"> *</span></label>
                   <select className="form-select" required value={pais}
                     onChange={(e) => { setPais(e.target.value) }}>
                     <option value="">Seleccionar</option>

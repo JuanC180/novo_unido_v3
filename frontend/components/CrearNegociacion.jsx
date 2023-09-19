@@ -304,7 +304,7 @@ const CrearNegociacion = () => {
                         <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Cliente</label>
+                                    <label className="form-label fw-bold">Cliente<span className="text-danger"> *</span></label>
                                     <select
                                         id="cliente"
                                         className="form-select"
@@ -322,7 +322,7 @@ const CrearNegociacion = () => {
                                     </select>
                                 </div>
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Cantidad Cuotas</label>
+                                    <label className="form-label fw-bold">Cantidad Cuotas<span className="text-danger"> *</span></label>
                                     <select className="form-select" required value={numCuotas} onChange={(e) => { setNumCuotas(e.target.value) }}>
                                         <option value="">Seleccionar</option>
                                         {Array.from({ length: 24 }, (_, index) => (
@@ -331,7 +331,7 @@ const CrearNegociacion = () => {
                                     </select>
                                 </div>
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Anticipo</label>
+                                    <label className="form-label fw-bold">Anticipo<span className="text-danger"> *</span></label>
                                     <input
                                         type="text"
                                         className={`form-control ${anticipoError ? 'is-invalid' : ''}`}
@@ -363,18 +363,19 @@ const CrearNegociacion = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Total</label>
+                                    <label className="form-label fw-bold">Total<span className="text-danger"> *</span></label>
                                     <input
                                         type="text"
                                         className={`form-control ${totalError || (total && parseFloat(total) < 33000000) ? 'is-invalid' : ''}`}
                                         placeholder="$"
                                         required
-                                        maxLength={9}
+                                        maxLength={12}
                                         onInput={(e) => validarNumericos(e, setErrorState, 8)}
-                                        value={total}
+                                        value={(total || total === 0) ? parseFloat(total).toLocaleString('es-CO', { minimumFractionDigits: 0 }) : ''}
                                         onChange={(e) => {
-                                            setTotal(e.target.value);
-                                            if (e.target.value.length < 8) {
+                                            const cleanedValue = e.target.value.replace(/\D/g, ''); // Remover cualquier carácter que no sea un dígito
+                                            setTotal(cleanedValue);
+                                            if (cleanedValue.length < 8) {
                                                 setTotalError(true);
                                             } else {
                                                 setTotalError(false);
@@ -385,7 +386,7 @@ const CrearNegociacion = () => {
                                 </div>
                                 <h2>Seleccionar Productos</h2>
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Producto</label>
+                                    <label className="form-label fw-bold">Producto<span className="text-danger"> *</span></label>
                                     <select
                                         id="producto"
                                         className="form-select"
@@ -406,7 +407,7 @@ const CrearNegociacion = () => {
                                     </select>
                                 </div>
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Precio venta</label>
+                                    <label className="form-label fw-bold">Precio venta<span className="text-danger"> *</span></label>
                                     {selectedProductos.length > 0 ? (
                                         selectedProductos.map((producto, index) => (
                                             <div key={index} className="mb-3">
@@ -415,7 +416,7 @@ const CrearNegociacion = () => {
                                                     className={`form-control ${precioVentaError[index] ? 'is-invalid' : ''}`}
                                                     placeholder="$"
                                                     required
-                                                    maxLength={9}  // Ajustar la longitud máxima según tus necesidades
+                                                    maxLength={12}
                                                     onInput={(e) => {
                                                         e.target.value = e.target.value.replace(/[^0-9.]/g, ''); // Eliminar caracteres no numéricos y puntos
                                                         const nuevosValores = [...precioVenta];
@@ -437,11 +438,18 @@ const CrearNegociacion = () => {
                                                             });
                                                         }
                                                     }}
-                                                    value={precioVenta[index] || ''}
+                                                    value={(precioVenta[index] || precioVenta[index] === 0) ? parseFloat(precioVenta[index]).toLocaleString('es-CL', { minimumFractionDigits: 0 }) : ''}
                                                     onChange={(e) => {
+                                                        const unformattedValue = e.target.value.replace(/\./g, ''); // Elimina los puntos de los separadores de miles
+
+                                                        // Formatear el valor numérico con separadores de miles
+                                                        const formattedValue = parseFloat(unformattedValue).toLocaleString('es-CL');
+
                                                         const nuevosValores = [...precioVenta];
-                                                        nuevosValores[index] = e.target.value;
+                                                        nuevosValores[index] = unformattedValue;
                                                         setPrecioVenta(nuevosValores);
+
+                                                        e.target.value = formattedValue; // Establecer el valor formateado en el campo
                                                     }}
                                                 />
                                                 {precioVentaError[index] && <div className="invalid-feedback">El precio de venta debe ser al menos $33.000.000.</div>}
@@ -460,7 +468,7 @@ const CrearNegociacion = () => {
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                     <div className="mb-3 w-100">
-                                        <label className="form-label fw-bold">Factura</label>
+                                        <label className="form-label fw-bold">Factura<span className="text-danger"> *</span></label>
                                         <input
                                             type="text"
                                             className={`form-control ${numFacturaError ? 'is-invalid' : ''}`}
@@ -485,7 +493,7 @@ const CrearNegociacion = () => {
                                         {numFacturaError && <div className="invalid-feedback">El número de factura debe tener dos letras seguidas de cuatro números.</div>}
                                     </div>
                                     <div className="mb-3 w-100">
-                                        <label className="form-label fw-bold">Tasa de Interés</label>
+                                        <label className="form-label fw-bold">Tasa de Interés<span className="text-danger"> *</span></label>
                                         <input
                                             type="text" // Cambiar de "number" a "text"
                                             className={`form-control ${tasaError ? 'is-invalid' : ''}`}
@@ -517,7 +525,7 @@ const CrearNegociacion = () => {
                                     </div>
 
                                     <div className="mb-3 w-100">
-                                        <label className="form-label fw-bold">Fecha Fin Gracia</label>
+                                        <label className="form-label fw-bold">Fecha Fin Gracia<span className="text-danger"> *</span></label>
                                         <input type="date" className="form-control" placeholder="Fecha Facturación" required
                                             value={fechaGracia}
                                             onChange={(e) => setFechaGracia(e.target.value)}
@@ -540,7 +548,7 @@ const CrearNegociacion = () => {
                                     <br />
                                     <br />
                                     <div className="mb-3 w-100">
-                                        <label className="form-label fw-bold">Cantidad</label>
+                                        <label className="form-label fw-bold">Cantidad<span className="text-danger"> *</span></label>
                                         {selectedProductos.length > 0 ? (
                                             selectedProductos.map((producto, index) => (
                                                 <div key={index} className="mb-3">
